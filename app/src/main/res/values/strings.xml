@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">UtilityApp</string>
+    <string name="utility_label">Utility</string>
+    <string name="settings_label">Settings</string>
+    <string name="utility_screen_title">Utility Screen</string>
+    <string name="counter_text">Counter: %1$d</string>
+    <string name="increment_button">Increment</string>
+    <string name="settings_screen_title">Settings Screen</string>
+    <string name="settings_screen_description">This is where you can add toggles or preferences.</string>
+</resources>
