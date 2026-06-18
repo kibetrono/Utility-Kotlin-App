@@ -25,7 +25,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.utilityapp.screens.SettingsScreen
 import com.example.utilityapp.screens.UtilityScreen
 import com.example.utilityapp.ui.theme.UtilityAppTheme
+import android.app.Application
+import com.example.utilityapp.di.appModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
+
+// Initialises Koin when the app starts
+class MainApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@MainApplication)
+            modules(appModules)
+        }
+    }
+}
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
