@@ -26,6 +26,7 @@ import com.example.utilityapp.screens.SettingsScreen
 import com.example.utilityapp.screens.UtilityScreen
 import com.example.utilityapp.ui.theme.UtilityAppTheme
 import android.app.Application
+import androidx.compose.runtime.collectAsState
 import com.example.utilityapp.di.appModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -46,45 +47,50 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            UtilityAppTheme {
-                UtilityApp()
-            }
+            UtilityApp()
         }
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun UtilityAppPreview() {
-    UtilityAppTheme {
-        UtilityApp()
-    }
+    UtilityApp()
 }
 @Composable
 fun UtilityApp() {
     var selectedTab by remember { mutableStateOf("Utility") }
+    val viewModel: com.example.utilityapp.viewmodels.CountryViewModel = org.koin.androidx.compose.koinViewModel()
+    val appTheme by viewModel.appTheme.collectAsState()
+    val isDarkTheme = when (appTheme) {
+        com.example.utilityapp.viewmodels.AppTheme.LIGHT -> false
+        com.example.utilityapp.viewmodels.AppTheme.DARK -> true
+        com.example.utilityapp.viewmodels.AppTheme.SYSTEM -> androidx.compose.foundation.isSystemInDarkTheme()
+    }
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = stringResource(R.string.utility_label)) },
-                    label = { Text(stringResource(R.string.utility_label)) },
-                    selected = selectedTab == "Utility",
-                    onClick = { selectedTab = "Utility" }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.settings_label)) },
-                    label = { Text(stringResource(R.string.settings_label)) },
-                    selected = selectedTab == "Settings",
-                    onClick = { selectedTab = "Settings" }
-                )
+    UtilityAppTheme(darkTheme = isDarkTheme) {
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    NavigationBarItem(
+                        icon = { Icon(Icons.Default.Home, contentDescription = stringResource(R.string.utility_label)) },
+                        label = { Text(stringResource(R.string.utility_label)) },
+                        selected = selectedTab == "Utility",
+                        onClick = { selectedTab = "Utility" }
+                    )
+                    NavigationBarItem(
+                        icon = { Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.settings_label)) },
+                        label = { Text(stringResource(R.string.settings_label)) },
+                        selected = selectedTab == "Settings",
+                        onClick = { selectedTab = "Settings" }
+                    )
+                }
             }
-        }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            when (selectedTab) {
-                "Utility" -> UtilityScreen()
-                "Settings" -> SettingsScreen()
+        ) { innerPadding ->
+            Box(modifier = Modifier.padding(innerPadding)) {
+                when (selectedTab) {
+                    "Utility" -> UtilityScreen()
+                    "Settings" -> SettingsScreen()
+                }
             }
         }
     }
