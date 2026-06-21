@@ -2,7 +2,7 @@ package com.example.utilityapp.data
 
 import kotlinx.serialization.Serializable
 
-// ----- Flags endpoint response -----
+// ----- Flags endpoint response shape -----
 @Serializable
 data class FlagResponse(
     val error: Boolean,
@@ -17,7 +17,7 @@ data class FlagEntry(
     val iso3: String = ""
 )
 
-// ----- Population endpoint response -----
+// ----- Population endpoint response shape -----
 @Serializable
 data class PopulationResponse(
     val error: Boolean,
@@ -37,7 +37,7 @@ data class PopulationCount(
     val value: Long
 )
 
-// ----- Merged model used by the UI -----
+// ----- Merged model used throughout the UI and ViewModel -----
 data class Country(
     val name: String,
     val flagUrl: String,
